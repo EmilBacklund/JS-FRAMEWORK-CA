@@ -24,7 +24,7 @@ const Header = () => {
   ];
 
   return (
-    <Disclosure as='header' className='header-background shadow'>
+    <Disclosure as='header' className='bg-white shadow'>
       {({ open }) => (
         <>
           <div className='mx-auto max-w-7xl px-2 sm:px-4 lg:divide-y lg:divide-gray-200 lg:px-8'>
