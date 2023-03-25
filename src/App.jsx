@@ -1,8 +1,12 @@
+import Router from './routes/Router';
+import Header from './components/shared/Header';
+
 function App() {
   return (
-    <div>
-      <h1 className='underline'>Hello</h1>
-    </div>
+    <>
+      <Header />
+      <Router />
+    </>
   );
 }
 
