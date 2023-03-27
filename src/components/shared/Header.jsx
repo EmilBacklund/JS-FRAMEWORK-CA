@@ -4,14 +4,13 @@ import {
   MagnifyingGlassIcon,
   ShoppingCartIcon,
 } from '@heroicons/react/20/solid';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const Header = () => {
   const productsInCart = useSelector(
     (state) => state.cart.productsInCart.length
   );
-  console.log(productsInCart);
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
@@ -103,7 +102,7 @@ const Header = () => {
                 ))}
               </div>
               <div className="ml-4 flow-root lg:ml-8">
-                <a href="#" className="group -m-2 flex items-center p-2">
+                <Link to="/cart" className="group -m-2 flex items-center p-2">
                   <ShoppingCartIcon
                     className="h-6 w-6 flex-shrink-0 text-gray-500 group-hover:text-gray-600"
                     aria-hidden="true"
@@ -112,7 +111,7 @@ const Header = () => {
                     {productsInCart}
                   </span>
                   <span className="sr-only">items in cart, view bag</span>
-                </a>
+                </Link>
               </div>
             </nav>
           </div>
@@ -139,7 +138,7 @@ const Header = () => {
             <div className="border-t border-gray-200 pt-4 pb-3">
               <div className="flex items-center px-4">
                 <div className="flow-root lg:ml-8">
-                  <a href="#" className="group -m-2 flex items-center p-2">
+                  <Link to="/cart" className="group -m-2 flex items-center p-2">
                     <ShoppingCartIcon
                       className="h-6 w-6 flex-shrink-0 text-gray-500 group-hover:text-gray-600"
                       aria-hidden="true"
@@ -148,7 +147,7 @@ const Header = () => {
                       {productsInCart}
                     </span>
                     <span className="sr-only">items in cart, view bag</span>
-                  </a>
+                  </Link>
                 </div>
                 <div className="flex-shrink-0">
                   {/* <img className='h-10 w-10 rounded-full' src={user.imageUrl} alt='' /> */}

@@ -11,6 +11,7 @@ const productsSlice = createSlice({
   initialState: {
     products: [],
     singleProduct: null,
+    isError: false,
   },
   // Here we declare the functions which amend our state
   // state - is the current state at this time
@@ -25,6 +26,9 @@ const productsSlice = createSlice({
       console.log('SET_SINGLE_PRODUCT: action.payload', action.payload);
       state.singleProduct = action.payload;
     },
+    SET_ERROR: (state, action) => {
+      state.isError = action.payload;
+    },
   },
 });
 
@@ -34,6 +38,7 @@ export default productsSlice.reducer;
 // *** WE DONT CHANGE THE STATE HERE ***
 const { SET_ALL_PRODUCTS } = productsSlice.actions;
 const { SET_SINGLE_PRODUCT } = productsSlice.actions;
+const { SET_ERROR } = productsSlice.actions;
 
 export const fetchProducts = () => async (dispatch) => {
   dispatch(setLoadingState(true));
@@ -44,19 +49,33 @@ export const fetchProducts = () => async (dispatch) => {
     dispatch(SET_ALL_PRODUCTS(data));
     dispatch(setLoadingState(false));
   } catch (e) {
-    console.error(e);
+    return console.error(e.message);
   }
 };
 
 export const fetchSingleProductByID = (id) => async (dispatch) => {
   dispatch(setLoadingState(true));
+  let singleResponse;
   try {
-    const singleResponse = await fetch(
+    singleResponse = await fetch(
       `https://api.noroff.dev/api/v1/online-shop/${id}`
     );
     const singleData = await singleResponse.json();
 
     dispatch(SET_SINGLE_PRODUCT(singleData));
     dispatch(setLoadingState(false));
-  } catch (e) {}
+  } catch (e) {
+    return console.error(e.message);
+  }
+  if (singleResponse.ok) {
+    console.log('singleResponse is okey');
+    dispatch(handleResponseError(false));
+  } else {
+    console.log('singleResponse is not okey');
+    dispatch(handleResponseError(true));
+  }
+};
+
+export const handleResponseError = (response) => (dispatch) => {
+  dispatch(SET_ERROR(response));
 };
