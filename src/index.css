@@ -7,9 +7,20 @@ body {
 }
 
 .background {
-  background: #212121;
+  background: #313131;
 }
 
 .header-background {
   background: #ffffff;
+}
+
+.labelText {
+  text-shadow: 0 0 0px #212121, 0 0 20px #212121, 0 0 0px ;
+
+}
+
+.glowText {
+  text-shadow: 0 0 20px #6366F1, 0 0 20px #6366F1, 0 0 10px ;
+  transition: all;
+  transition-duration: 300ms;
 }
