@@ -36,7 +36,7 @@ const ProductDetail = () => {
   return (
     <>
       {singleProduct && !isError && (
-        <div className="bg-violet-50">
+        <div className="bg-violet-100">
           <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
             {/* Product details */}
             <div className="lg:max-w-lg lg:self-end">

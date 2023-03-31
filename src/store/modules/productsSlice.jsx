@@ -18,7 +18,7 @@ const productsSlice = createSlice({
   // action - it will have the new state we get from the API
   reducers: {
     SET_ALL_PRODUCTS: (state, action) => {
-      console.log('SET_PRODUCTS: action.payload', action.payload[2]);
+      console.log('SET_PRODUCTS: action.payload', action.payload);
 
       state.products = action.payload;
     },

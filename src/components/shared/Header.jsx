@@ -4,7 +4,7 @@ import {
   MagnifyingGlassIcon,
   ShoppingCartIcon,
 } from '@heroicons/react/20/solid';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const Header = () => {
@@ -86,9 +86,9 @@ const Header = () => {
             >
               <div className="flex gap-8">
                 {navigation.map((item) => (
-                  <a
+                  <NavLink
                     key={item.name}
-                    href={item.href}
+                    to={item.href}
                     className={classNames(
                       item.current
                         ? 'bg-gray-200 text-gray-800'
@@ -98,11 +98,14 @@ const Header = () => {
                     aria-current={item.current ? 'page' : undefined}
                   >
                     {item.name}
-                  </a>
+                  </NavLink>
                 ))}
               </div>
               <div className="ml-4 flow-root lg:ml-8">
-                <Link to="/cart" className="group -m-2 flex items-center p-2">
+                <NavLink
+                  to="/cart"
+                  className="group -m-2 flex items-center p-2"
+                >
                   <ShoppingCartIcon
                     className="h-6 w-6 flex-shrink-0 text-gray-500 group-hover:text-gray-600"
                     aria-hidden="true"
@@ -111,7 +114,7 @@ const Header = () => {
                     {productsInCart}
                   </span>
                   <span className="sr-only">items in cart, view bag</span>
-                </Link>
+                </NavLink>
               </div>
             </nav>
           </div>
@@ -119,10 +122,10 @@ const Header = () => {
           <Disclosure.Panel as="nav" className="lg:hidden" aria-label="Global">
             <div className="space-y-1 px-2 pt-2 pb-3">
               {navigation.map((item) => (
-                <Disclosure.Button
+                <NavLink
                   key={item.name}
                   as="a"
-                  href={item.href}
+                  to={item.href}
                   className={classNames(
                     item.current
                       ? 'bg-gray-200 text-gray-800'
@@ -132,13 +135,16 @@ const Header = () => {
                   aria-current={item.current ? 'page' : undefined}
                 >
                   {item.name}
-                </Disclosure.Button>
+                </NavLink>
               ))}
             </div>
             <div className="border-t border-gray-200 pt-4 pb-3">
               <div className="flex items-center px-4">
                 <div className="flow-root lg:ml-8">
-                  <Link to="/cart" className="group -m-2 flex items-center p-2">
+                  <NavLink
+                    to="/cart"
+                    className="group -m-2 flex items-center p-2"
+                  >
                     <ShoppingCartIcon
                       className="h-6 w-6 flex-shrink-0 text-gray-500 group-hover:text-gray-600"
                       aria-hidden="true"
@@ -147,7 +153,7 @@ const Header = () => {
                       {productsInCart}
                     </span>
                     <span className="sr-only">items in cart, view bag</span>
-                  </Link>
+                  </NavLink>
                 </div>
                 <div className="flex-shrink-0">
                   {/* <img className='h-10 w-10 rounded-full' src={user.imageUrl} alt='' /> */}
