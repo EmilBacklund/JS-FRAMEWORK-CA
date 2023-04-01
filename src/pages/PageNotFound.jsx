@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 
 const PageNotFound = ({ statusCode, isError, status }) => {
   useEffect(() => {
@@ -29,9 +30,12 @@ const PageNotFound = ({ statusCode, isError, status }) => {
           {isError && 'Sorry, we couldn’t find the item you’re looking for.'}
         </p>
         <div className="mt-10 flex justify-center">
-          <a href="#" className="text-sm font-semibold leading-7 text-white">
+          <NavLink
+            to="/products"
+            className="text-sm font-semibold leading-7 text-white"
+          >
             <span aria-hidden="true">&larr;</span> Back to home
-          </a>
+          </NavLink>
         </div>
       </div>
     </main>

@@ -11,7 +11,7 @@ import { ShieldCheckIcon } from '@heroicons/react/24/outline';
 import ReviewSection from '../components/ReviewSection';
 import { addProductToCart } from '../store/modules/cartSlice';
 import PageNotFound from './PageNotFound';
-import { handleResponseError } from '../store/modules/productsSlice';
+import MaxQuantityError from '../components/MaxQuantityError';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -20,8 +20,18 @@ function classNames(...classes) {
 const ProductDetail = () => {
   const dispatch = useDispatch();
   const { singleProduct, isError } = useSelector((state) => state.products);
+  const { productsInCart } = useSelector((state) => state.cart);
 
   let { id } = useParams();
+  let currentItemInCart;
+
+  console.log('PRODUCT IN CART', productsInCart);
+
+  productsInCart.forEach((item) => {
+    if (singleProduct.id === item.id) {
+      currentItemInCart = item.quantity;
+    }
+  });
 
   console.log(useSelector((state) => state.products));
 
@@ -35,6 +45,12 @@ const ProductDetail = () => {
 
   return (
     <>
+      {currentItemInCart == 10 && (
+        <MaxQuantityError
+          item={singleProduct.title}
+          itemImg={singleProduct.imageUrl}
+        />
+      )}
       {singleProduct && !isError && (
         <div className="bg-violet-100">
           <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
