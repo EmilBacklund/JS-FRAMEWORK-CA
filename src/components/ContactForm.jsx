@@ -172,7 +172,7 @@ const ContactForm = ({ setSubmitted }) => {
             <div className="mt-2.5">
               <textarea
                 placeholder="Message"
-                rows={4}
+                rows={3}
                 {...register('message', {
                   required: 'Message is required',
                   minLength: 3,
@@ -188,7 +188,7 @@ const ContactForm = ({ setSubmitted }) => {
           <input
             type="submit"
             value="Submit"
-            className="rounded-md w-50 bg-indigo-500 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+            className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
           />
         </div>
       </div>

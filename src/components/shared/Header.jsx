@@ -8,9 +8,13 @@ import { useLocation, NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const Header = () => {
-  const productsInCart = useSelector(
-    (state) => state.cart.productsInCart.length
-  );
+  const productsInCart = useSelector((state) => state.cart.productsInCart);
+
+  let totalItemsWithQuantity = 0;
+
+  productsInCart.forEach((item) => {
+    totalItemsWithQuantity += item.quantity;
+  });
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
@@ -20,8 +24,8 @@ const Header = () => {
 
   const navigation = [
     {
-      name: 'Home',
-      href: '/',
+      name: 'All Products',
+      href: '/products',
       current: location.pathname === '/',
     },
     {
@@ -111,7 +115,7 @@ const Header = () => {
                     aria-hidden="true"
                   />
                   <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                    {productsInCart}
+                    {totalItemsWithQuantity}
                   </span>
                   <span className="sr-only">items in cart, view bag</span>
                 </NavLink>
@@ -150,7 +154,7 @@ const Header = () => {
                       aria-hidden="true"
                     />
                     <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                      {productsInCart}
+                      {totalItemsWithQuantity}
                     </span>
                     <span className="sr-only">items in cart, view bag</span>
                   </NavLink>

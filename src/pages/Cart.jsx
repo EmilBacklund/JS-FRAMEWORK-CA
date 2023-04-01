@@ -1,24 +1,19 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { CheckIcon } from '@heroicons/react/20/solid';
 import { NavLink } from 'react-router-dom';
-import { removeProductFromCart } from '../store/modules/cartSlice';
+import {
+  removeProductFromCart,
+  updateProductQuantity,
+} from '../store/modules/cartSlice';
+import { useState, useEffect } from 'react';
 
 const Cart = () => {
   const dispatch = useDispatch();
   const { productsInCart } = useSelector((state) => state.cart);
+  const [priceWithDiscount, setPriceWithDiscount] = useState(0);
+  const [priceWithNoDiscount, setPriceWithNoDiscount] = useState(0);
 
-  let priceWithDiscount = 0;
-  let priceWithNoDiscount = 0;
-
-  productsInCart.forEach((item) => {
-    priceWithNoDiscount += item.price;
-  });
-
-  productsInCart.forEach((item) => {
-    priceWithDiscount += item.discountedPrice;
-  });
-
-  console.log(productsInCart);
+  console.log('PRODUKTER I VAGNEN', productsInCart);
 
   function calculateDiscountPercentage(noDiscount, discount) {
     const difference = noDiscount - discount;
@@ -31,6 +26,37 @@ const Cart = () => {
       </p>
     );
   }
+
+  const handleQuantityChange = (event, cartIndex) => {
+    const newQuantity = parseInt(event.target.value);
+    const item = productsInCart[cartIndex];
+    const oldQuantity = item.quantity;
+
+    const newPriceWithNoDiscount =
+      priceWithNoDiscount + (newQuantity - oldQuantity) * item.price;
+    const newPriceWithDiscount =
+      priceWithDiscount + (newQuantity - oldQuantity) * item.discountedPrice;
+
+    setPriceWithNoDiscount(newPriceWithNoDiscount);
+    setPriceWithDiscount(newPriceWithDiscount);
+
+    dispatch(
+      updateProductQuantity({ index: cartIndex, quantity: newQuantity })
+    );
+  };
+
+  useEffect(() => {
+    let initialPriceWithDiscount = 0;
+    let initialPriceWithNoDiscount = 0;
+
+    productsInCart.forEach((item) => {
+      initialPriceWithNoDiscount += item.price * item.quantity;
+      initialPriceWithDiscount += item.discountedPrice * item.quantity;
+    });
+
+    setPriceWithNoDiscount(initialPriceWithNoDiscount);
+    setPriceWithDiscount(initialPriceWithDiscount);
+  }, [productsInCart]);
 
   return (
     <div className="bg-violet-100">
@@ -47,7 +73,7 @@ const Cart = () => {
               <h1 className="text-2xl text-gray-900">Cart is empty</h1>
             </div>
             <NavLink
-              to="/"
+              to="/products"
               className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
             >
               Continue Shopping
@@ -68,7 +94,7 @@ const Cart = () => {
                   role="list"
                   className="divide-y divide-gray-200 border-t border-b border-gray-200"
                 >
-                  {productsInCart.map((product, productIdx) => (
+                  {productsInCart.map((product, cartIndex) => (
                     <li key={product.id} className="flex py-6 sm:py-10">
                       <div className="flex-shrink-0">
                         <img
@@ -90,15 +116,27 @@ const Cart = () => {
                                   {product.title}
                                 </a>
                               </h3>
+                              {product.quantity > 1 && (
+                                <p className="text-xs mt-2 text-gray-500 font-bold pl-2">
+                                  ${product.discountedPrice}/ piece with
+                                  discount
+                                </p>
+                              )}
                             </div>
 
                             <div>
                               <p className="text-right text-base font-medium text-green-600">
-                                ${product.discountedPrice}
+                                $
+                                {(
+                                  product.discountedPrice * product.quantity
+                                ).toFixed(2)}
                               </p>
                               {product.discountedPrice !== product.price && (
                                 <p className="text-right text-sm font-medium text-red-500 line-through">
-                                  ${product.price}
+                                  $
+                                  {(product.price * product.quantity).toFixed(
+                                    2
+                                  )}
                                 </p>
                               )}
                             </div>
@@ -106,24 +144,25 @@ const Cart = () => {
 
                           <div className="mt-4 flex items-center sm:absolute sm:top-0 sm:left-1/2 sm:mt-0 sm:block">
                             <label
-                              htmlFor={`quantity-${productIdx}`}
+                              htmlFor={`quantity-${cartIndex}`}
                               className="sr-only"
                             >
                               Quantity, {product.title}
                             </label>
                             <select
-                              id={`quantity-${productIdx}`}
-                              name={`quantity-${productIdx}`}
+                              id={`quantity-${cartIndex}`}
+                              name={`quantity-${cartIndex}`}
+                              value={product.quantity}
+                              onChange={(e) =>
+                                handleQuantityChange(e, cartIndex)
+                              }
                               className="block max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-200 sm:text-sm"
                             >
-                              <option value={1}>1</option>
-                              <option value={2}>2</option>
-                              <option value={3}>3</option>
-                              <option value={4}>4</option>
-                              <option value={5}>5</option>
-                              <option value={6}>6</option>
-                              <option value={7}>7</option>
-                              <option value={8}>8</option>
+                              {[...Array(10).keys()].map((num) => (
+                                <option key={num + 1} value={num + 1}>
+                                  {num + 1}
+                                </option>
+                              ))}
                             </select>
 
                             <button
@@ -133,7 +172,7 @@ const Cart = () => {
                                 dispatch(removeProductFromCart(product.id))
                               }
                             >
-                              <span>Remove</span>
+                              <span>Remove all</span>
                             </button>
                           </div>
                         </div>
@@ -159,12 +198,12 @@ const Cart = () => {
 
                 <div>
                   <dl className="space-y-4">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center ">
                       <dt className="text-base font-medium text-gray-900">
-                        Subtotal
+                        Total:
                       </dt>
                       <dd className="ml-4 text-base font-medium text-green-600">
-                        ${priceWithDiscount}
+                        ${priceWithDiscount.toFixed(2)}
                       </dd>
                     </div>
                   </dl>
@@ -188,7 +227,7 @@ const Cart = () => {
                   <p>
                     or{' '}
                     <NavLink
-                      to="/"
+                      to="/products"
                       className="font-medium text-indigo-600 hover:text-indigo-500"
                     >
                       Continue Shopping

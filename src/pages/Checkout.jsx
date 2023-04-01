@@ -17,7 +17,6 @@ const Checkout = () => {
   const handlePayNowClick = (event) => {
     event.preventDefault();
     dispatch(clearCart());
-    console.log('Hej');
     setHavePayed(true);
   };
 
@@ -28,7 +27,7 @@ const Checkout = () => {
           <div className="mx-auto flex items-center gap-6 flex-col justify-center max-w-7xl py-32 mb-auto ">
             <h1 className="text-center">Something went wrong 😞</h1>
             <NavLink
-              to="/"
+              to="/products"
               className="rounded-md w-auto text-center border cursor-pointer border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
             >
               Back to Home
@@ -42,7 +41,7 @@ const Checkout = () => {
             <h1 className="text-center">Your payment was successfull!</h1>
             <p>Thank you! 🥰</p>
             <NavLink
-              to="/"
+              to="/products"
               className="rounded-md w-auto text-center border cursor-pointer border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
             >
               Back to Home
@@ -99,7 +98,7 @@ const Checkout = () => {
                         <p>{product.description}</p>
                       </div>
                       <p className="flex-none text-base font-medium text-white">
-                        ${product.discountedPrice}
+                        ${product.discountedPrice * product.quantity}
                       </p>
                     </li>
                   ))}
