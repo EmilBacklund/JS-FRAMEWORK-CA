@@ -16,10 +16,6 @@ export default loaderSlice.reducer;
 
 const { SET_LOADING } = loaderSlice.actions;
 
-// export const setLoadingState = (loadingStatus) => (dispatch) => {
-//   dispatch(SET_LOADING(loadingStatus));
-// };
-
 export const setLoadingState = (loadingStatus) => (dispatch) => {
   dispatch(SET_LOADING(loadingStatus));
 };

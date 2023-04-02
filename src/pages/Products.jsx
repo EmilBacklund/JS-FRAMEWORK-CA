@@ -17,8 +17,6 @@ const Products = () => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  console.log('Produkter', products);
-
   return (
     <div className="background">
       <PromoSection products={products} />

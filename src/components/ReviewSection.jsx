@@ -15,7 +15,6 @@ const ReviewSection = ({ singleProduct }) => {
     { rating: 1, count: 0 },
   ];
 
-  // Loop through the reviews array and increment the count for the corresponding rating
   singleProduct.reviews.forEach((review) => {
     const rating = review.rating;
     const countObj = counts.find((obj) => obj.rating === rating);

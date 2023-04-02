@@ -2,11 +2,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { clearCart } from '../store/modules/cartSlice';
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
+import { selectTotalPriceWithDiscount } from '../store/modules/cartSlice';
 
 const Checkout = () => {
   const dispatch = useDispatch();
   const { productsInCart } = useSelector((state) => state.cart);
   const [havePayed, setHavePayed] = useState(false);
+  const totalPriceWithDiscount = useSelector(selectTotalPriceWithDiscount);
 
   let priceWithDiscount = 0;
 
@@ -98,7 +100,10 @@ const Checkout = () => {
                         <p>{product.description}</p>
                       </div>
                       <p className="flex-none text-base font-medium text-white">
-                        ${product.discountedPrice * product.quantity}
+                        $
+                        {(product.discountedPrice * product.quantity).toFixed(
+                          2
+                        )}
                       </p>
                     </li>
                   ))}
@@ -107,7 +112,9 @@ const Checkout = () => {
                 <dl className="space-y-6 border-t border-white border-opacity-10 pt-6 text-sm font-medium">
                   <div className="flex items-center justify-between pt-6 text-white">
                     <dt className="text-base">Total</dt>
-                    <dd className="text-base">${priceWithDiscount}</dd>
+                    <dd className="text-base">
+                      ${totalPriceWithDiscount.toFixed(2)}
+                    </dd>
                   </div>
                 </dl>
               </div>
