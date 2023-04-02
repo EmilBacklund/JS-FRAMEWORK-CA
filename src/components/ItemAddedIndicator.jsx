@@ -2,6 +2,7 @@ import { Popover, Transition } from '@headlessui/react';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { useRef } from 'react';
+import { XMarkIcon } from '@heroicons/react/20/solid';
 
 const ItemAddedIndicator = ({
   show,
@@ -39,6 +40,16 @@ const ItemAddedIndicator = ({
           <Popover.Panel className="">
             <h2 className="sr-only">Shopping Cart</h2>
             <form className="mx-auto max-w-2xl px-4">
+              <button
+                type="button"
+                className="h-fit float-right mt-6 rounded-md bg-gray-400 text-gray-300 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                onClick={() => {
+                  setItemAdded(false);
+                }}
+              >
+                <span className="sr-only">Close</span>
+                <XMarkIcon className="h-5 w-5" aria-hidden="true" />
+              </button>
               <ul role="list" className="divide-y divide-gray-200">
                 {productsInCart.slice(-3).map((product) => (
                   <li key={product.id} className="flex items-center py-6">
