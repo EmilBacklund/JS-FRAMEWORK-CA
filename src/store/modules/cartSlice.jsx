@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 
 const cartrSlice = createSlice({
   name: 'cart',
@@ -7,24 +7,16 @@ const cartrSlice = createSlice({
   },
   reducers: {
     ADD_PRODUCT_TO_CART: (state, action) => {
-      // console.log('action: ', action);
-      console.log('state: ', state.productsInCart);
-      // state.productsInCart = [...state.productsInCart, action.payload];
-
       const productIndex = state.productsInCart.findIndex(
         (product) => product.id === action.payload.id
       );
-
-      console.log('Product Index: ', productIndex);
 
       if (productIndex !== -1) {
         if (state.productsInCart[productIndex].quantity <= 9) {
           state.productsInCart[productIndex].quantity += 1;
           state.productsInCart[productIndex].canAddItem = true;
         } else {
-          console.log("You can't buy more then 10 of same item");
           state.productsInCart[productIndex].canAddItem = false;
-          console.log(state.productsInCart[productIndex].canAddItem);
         }
       } else {
         state.productsInCart = [
@@ -34,7 +26,6 @@ const cartrSlice = createSlice({
       }
     },
     REMOVE_PRODUCT_FROM_CART: (state, action) => {
-      console.log('State: ', state, 'Action: ', action);
       state.productsInCart = state.productsInCart.filter(
         (product) => product.id !== action.payload
       );
@@ -60,12 +51,10 @@ const {
 } = cartrSlice.actions;
 
 export const addProductToCart = (productData) => (dispatch) => {
-  // console.log('productData: ', productData);
   dispatch(ADD_PRODUCT_TO_CART(productData));
 };
 
 export const removeProductFromCart = (productId) => (dispatch) => {
-  // console.log('productID: ', productId);
   dispatch(REMOVE_PRODUCT_FROM_CART(productId));
 };
 
@@ -76,3 +65,16 @@ export const clearCart = () => (dispatch) => {
 export const updateProductQuantity = (index) => (dispatch) => {
   dispatch(UPDATE_PRODUCT_QUANTITY(index));
 };
+
+export const selectTotalPriceWithDiscount = createSelector(
+  (state) => state.cart.productsInCart,
+  (productsInCart) => {
+    let totalPriceWithDiscount = 0;
+
+    productsInCart.forEach((item) => {
+      totalPriceWithDiscount += item.discountedPrice * item.quantity;
+    });
+
+    return totalPriceWithDiscount;
+  }
+);

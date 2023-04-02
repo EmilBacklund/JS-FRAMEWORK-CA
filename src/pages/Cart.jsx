@@ -13,8 +13,6 @@ const Cart = () => {
   const [priceWithDiscount, setPriceWithDiscount] = useState(0);
   const [priceWithNoDiscount, setPriceWithNoDiscount] = useState(0);
 
-  console.log('PRODUKTER I VAGNEN', productsInCart);
-
   function calculateDiscountPercentage(noDiscount, discount) {
     const difference = noDiscount - discount;
     const discountPercentage = (difference / noDiscount) * 100;

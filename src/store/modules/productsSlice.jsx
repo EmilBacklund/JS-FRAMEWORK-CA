@@ -1,33 +1,27 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { setLoadingState } from './loaderSlice';
 
-// Slice
-// name
-// initial state
-// reducers // those are the functions which amend of change the state
-
 const productsSlice = createSlice({
   name: 'products',
   initialState: {
     products: [],
     singleProduct: null,
     isError: false,
+    filteredProducts: [],
   },
-  // Here we declare the functions which amend our state
-  // state - is the current state at this time
-  // action - it will have the new state we get from the API
+
   reducers: {
     SET_ALL_PRODUCTS: (state, action) => {
-      console.log('SET_PRODUCTS: action.payload', action.payload);
-
       state.products = action.payload;
     },
     SET_SINGLE_PRODUCT: (state, action) => {
-      console.log('SET_SINGLE_PRODUCT: action.payload', action.payload);
       state.singleProduct = action.payload;
     },
     SET_ERROR: (state, action) => {
       state.isError = action.payload;
+    },
+    SET_FILTERED_PRODUCTS: (state, action) => {
+      state.filteredProducts = action.payload;
     },
   },
 });
@@ -39,6 +33,7 @@ export default productsSlice.reducer;
 const { SET_ALL_PRODUCTS } = productsSlice.actions;
 const { SET_SINGLE_PRODUCT } = productsSlice.actions;
 const { SET_ERROR } = productsSlice.actions;
+const { SET_FILTERED_PRODUCTS } = productsSlice.actions;
 
 export const fetchProducts = () => async (dispatch) => {
   dispatch(setLoadingState(true));
@@ -68,14 +63,16 @@ export const fetchSingleProductByID = (id) => async (dispatch) => {
     return console.error(e.message);
   }
   if (singleResponse.ok) {
-    console.log('singleResponse is okey');
     dispatch(handleResponseError(false));
   } else {
-    console.log('singleResponse is not okey');
     dispatch(handleResponseError(true));
   }
 };
 
 export const handleResponseError = (response) => (dispatch) => {
   dispatch(SET_ERROR(response));
+};
+
+export const handleFilteredProducts = (filteredProducts) => (dispatch) => {
+  dispatch(SET_FILTERED_PRODUCTS(filteredProducts));
 };
